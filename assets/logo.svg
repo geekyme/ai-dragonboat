@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Dragon Boat: The AI Crossing logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2461d6"/><stop offset="0.55" stop-color="#0c2f55"/><stop offset="1" stop-color="#061a2b"/></linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#fff5c8"/><stop offset="0.55" stop-color="#f2c14e"/><stop offset="1" stop-color="#d9962b"/></radialGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#f2c14e" stop-opacity="0.55"/><stop offset="1" stop-color="#f2c14e" stop-opacity="0"/></radialGradient>
+    <linearGradient id="hull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e63946"/><stop offset="1" stop-color="#8f141c"/></linearGradient>
+    <linearGradient id="sea1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2fb7c9"/><stop offset="1" stop-color="#0a3d6a"/></linearGradient>
+    <clipPath id="round"><rect width="512" height="512" rx="104"/></clipPath>
+  </defs>
+  <g clip-path="url(#round)">
+    <rect width="512" height="512" fill="url(#bg)"/>
+    <circle cx="352" cy="176" r="150" fill="url(#glow)"/>
+    <circle cx="352" cy="176" r="76" fill="url(#sun)"/>
+    <!-- sea -->
+    <path d="M0 356 Q 48 330 96 356 T 192 356 T 288 356 T 384 356 T 480 356 T 576 356 V 512 H 0 Z" fill="url(#sea1)"/>
+    <path d="M-40 404 Q 8 380 56 404 T 152 404 T 248 404 T 344 404 T 440 404 T 536 404 V 512 H -40 Z" fill="#2ee6d6" opacity="0.28"/>
+    <path d="M-20 448 Q 28 426 76 448 T 172 448 T 268 448 T 364 448 T 460 448 T 556 448 V 512 H -20 Z" fill="#eaf6ff" opacity="0.16"/>
+    <!-- tail -->
+    <path d="M92 300 C 70 292, 58 262, 74 240 C 84 228, 100 232, 96 250" fill="none" stroke="#e63946" stroke-width="16" stroke-linecap="round"/>
+    <path d="M74 240 L 58 222 L 84 224 Z" fill="#f2c14e"/>
+    <!-- hull -->
+    <path d="M78 302 C 150 392, 370 392, 438 300 L 416 300 C 352 362, 168 362, 104 300 Z" fill="url(#hull)"/>
+    <path d="M100 300 C 168 348, 352 348, 420 300" fill="none" stroke="#f2c14e" stroke-width="9" stroke-linecap="round"/>
+    <!-- paddlers -->
+    <g fill="#1bb8a8">
+      <circle cx="170" cy="286" r="12"/><circle cx="214" cy="292" r="12"/><circle cx="258" cy="294" r="12"/><circle cx="302" cy="292" r="12"/><circle cx="346" cy="286" r="12"/>
+    </g>
+    <g stroke="#f5deb3" stroke-width="6" stroke-linecap="round">
+      <line x1="170" y1="298" x2="150" y2="352"/><line x1="214" y1="304" x2="196" y2="358"/><line x1="258" y1="306" x2="242" y2="360"/><line x1="302" y1="304" x2="286" y2="358"/><line x1="346" y1="298" x2="330" y2="352"/>
+    </g>
+    <!-- drummer (department head) -->
+    <circle cx="392" cy="270" r="14" fill="#1b2a49"/>
+    <rect x="378" y="284" width="28" height="16" rx="4" fill="#c1272d"/>
+    <!-- dragon head -->
+    <path d="M432 302 C 470 300, 486 268, 470 246 C 458 230, 436 232, 428 250 C 424 262, 428 288, 432 302 Z" fill="#c1272d"/>
+    <path d="M470 246 L 496 262 L 468 268 Z" fill="#c1272d"/>
+    <path d="M448 232 L 456 206 L 466 234 Z" fill="#f2c14e"/>
+    <path d="M430 240 L 428 214 L 444 236 Z" fill="#f2c14e"/>
+    <circle cx="456" cy="254" r="6" fill="#fff"/><circle cx="458" cy="254" r="3" fill="#111"/>
+    <!-- AI spark -->
+    <path d="M124 150 L 134 178 L 162 188 L 134 198 L 124 226 L 114 198 L 86 188 L 114 178 Z" fill="#2ee6d6"/>
+    <path d="M176 104 L 181 118 L 195 123 L 181 128 L 176 142 L 171 128 L 157 123 L 171 118 Z" fill="#2ee6d6" opacity="0.8"/>
+  </g>
+</svg>
