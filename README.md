@@ -1,7 +1,5 @@
 # Dragon Boat: The AI Crossing
 
-**Play it:** https://geekyme.github.io/ai-game-dragonboat/
-
 A purely front-end 3D dragon boat game about adopting AI as a team. You are Seat 8, an analyst;
 your department head Director Mei is on the drum, rowing the crew toward Transformation Island.
 Viewpoint is from the stern, looking down the boat.
@@ -10,14 +8,22 @@ Viewpoint is from the stern, looking down the boat.
 
 The site is fully static, so it deploys straight from this repo:
 
-1. Push to GitHub as `geekyme/ai-game-dragonboat` (any name works; if you change it, update the
-   `og:url`, `og:image`, `canonical` and JSON-LD URLs in the `<head>` of `index.html`).
+1. Push the repo to GitHub. Make sure the `og:url`, `og:image`, `canonical` and JSON-LD URLs in the
+   `<head>` of `index.html` (and `SITE_URL` in the share code) match your Pages address.
 2. The workflow in `.github/workflows/pages.yml` builds and publishes on every push to `main`
    and enables Pages on the first run. Alternatively set **Settings → Pages → Source** to
    *Deploy from a branch*, `main` / `/ (root)`.
-3. Open https://geekyme.github.io/ai-game-dragonboat/.
+3. Open your GitHub Pages address.
 
 `.nojekyll` is included so Pages serves the files as-is.
+
+## Sharing your result
+
+The end screen renders a square result card (grade, stats, adopted tools, drawn over your final frame)
+and offers Share (native share sheet with the image on phones), Save image, LinkedIn, X, WhatsApp and
+Copy caption. The caption links to the game with your result encoded in the URL hash, so anyone who
+opens it sees a "Beat it" challenge banner on the title screen. `SITE_URL` in `index.html` must match
+your Pages address.
 
 ## Sharing and SEO
 

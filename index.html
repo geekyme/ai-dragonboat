@@ -159,6 +159,16 @@ kbd{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(
 @media (max-width:640px){.howto{grid-template-columns:1fr}.step{flex-direction:row;text-align:left;gap:12px}.step .ico{width:48px;height:48px;flex:none}.step>b{display:block}.step>span{display:block}.startCard{padding:22px 18px}}
 .hudBtn{pointer-events:auto;cursor:pointer;margin-top:6px;font:700 11px Inter,sans-serif;letter-spacing:.06em;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:5px 9px}
 .hudBtn.off{opacity:.6;text-decoration:line-through}
+.shareBox{display:flex;gap:18px;align-items:flex-start;margin:6px 0 16px;flex-wrap:wrap}
+.cardPreview{width:200px;height:200px;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);background:#0b1220;flex:none}
+.shareCol{flex:1;min-width:240px}
+.shareRow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px}
+.shareBtn{font:700 12px Inter,sans-serif;color:#fff;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:9px 12px;cursor:pointer;letter-spacing:.02em}
+.shareBtn:hover{background:rgba(255,255,255,.16)}
+.shareBtn.primary{background:rgba(46,230,214,.2);border-color:var(--teal);color:#dffcf9}
+.shareTextarea{width:100%;font:13px/1.4 Inter,sans-serif;color:#dfe7f0;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:8px 10px;resize:none}
+.challenge{margin:-4px 0 14px;padding:10px 14px;border-radius:12px;background:rgba(242,193,78,.12);border:1px solid rgba(242,193,78,.5);font-size:14px}
+@media (max-width:640px){.cardPreview{width:100%;height:auto;max-width:320px}}
 .credit{margin-top:16px;font-size:12px;opacity:.7;letter-spacing:.02em}
 .credit a{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(46,230,214,.4)}
 .credit a:hover{border-bottom-color:var(--teal)}
@@ -209,6 +219,7 @@ kbd{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(
   <div class="card startCard">
     <div class="titleRow"><img src="assets/logo.svg" alt="" width="76" height="76" class="logo"><div><h1>DRAGON BOAT<br>THE AI CROSSING</h1><div class="sub">Paddle your team to Transformation Island</div></div></div>
     <p class="lede">You're <b>Seat 8</b>. Your department head is on the drum. Get the crew across.</p>
+    <p id="challenge" class="challenge" hidden></p>
     <div class="howto">
       <div class="step">
         <svg viewBox="0 0 96 96" class="ico"><circle cx="48" cy="48" r="20" fill="none" stroke="#fff" stroke-width="4"/><circle cx="48" cy="48" r="34" fill="none" stroke="#f2c14e" stroke-width="4" stroke-dasharray="6 5"/><path d="M48 6 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="#f2c14e"/><path d="M40 62 l8 8 20-22" fill="none" stroke="#2ee6d6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -242,8 +253,23 @@ kbd{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(
     <div class="report" id="report"></div>
     <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.7">AI tools adopted</div>
     <div class="chips" id="chips"></div>
-    <button class="btn" id="againBtn">Sail Again</button>
-    <p class="credit">Made by a fellow AI adopter · <a href="https://linkedin.com/in/geekyme" target="_blank" rel="noopener">Shawn Lim on LinkedIn</a> · Share the crossing with your team</p>
+    <div class="shareBox">
+      <img id="cardPreview" alt="Your result card" class="cardPreview">
+      <div class="shareCol">
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.7;margin-bottom:8px">Share your crossing</div>
+        <div class="shareRow">
+          <button class="shareBtn primary" id="shNative">📤 Share</button>
+          <button class="shareBtn" id="shDownload">⬇ Save image</button>
+          <button class="shareBtn" id="shLinkedIn">in LinkedIn</button>
+          <button class="shareBtn" id="shX">𝕏 Post</button>
+          <button class="shareBtn" id="shWhatsApp">WhatsApp</button>
+          <button class="shareBtn" id="shCopy">📋 Copy caption</button>
+        </div>
+        <textarea id="shareText" class="shareTextarea" rows="3" readonly></textarea>
+      </div>
+    </div>
+    <div class="actions"><button class="btn" id="againBtn">Sail Again</button></div>
+    <p class="credit">Made by a fellow AI adopter · <a href="https://linkedin.com/in/geekyme" target="_blank" rel="noopener">Shawn Lim on LinkedIn</a></p>
   </div>
 </div>
 
@@ -814,7 +840,52 @@ function endGame(win){if(G.ended)return;G.ended=true;G.state=win?'won':'lost';Mu
   $('endTitle').textContent=win?'WE MADE IT':'LOST AT SEA';$('endSub').textContent=win?'Adoption Report · Operations Team':'Incident Report · Operations Team';$('grade').textContent=grade;$('verdict').textContent=verdict;
   $('report').innerHTML=[['Distance',Math.round(G.dist)+' m'],['Time',mins+':'+String(secs).padStart(2,'0')],['AI adoption',Math.round(G.adoption)+'%'],['Strokes in sync',sync+'%'],['Best sync streak','×'+G.maxCombo],['Tools adopted',G.orbsGot],['Hallucinations grabbed',G.halluc],['Legacy hits',G.hits],['Sync gates',G.gates],['Score',Math.round(G.score).toLocaleString()]].map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join('');
   $('chips').innerHTML=AI_TOOLS.map(t=>`<span class="chip ${G.tools.has(t.name)?'':'off'}" style="${G.tools.has(t.name)?'border-color:'+t.css+';color:'+t.css:''}">${t.name}</span>`).join('');
+  G.result={win,grade,sync,adoption:Math.round(G.adoption),streak:G.maxCombo,tools:G.orbsGot,halluc:G.halluc,hits:G.hits,score:Math.round(G.score),time:mins+':'+String(secs).padStart(2,'0')};
+  buildShare().catch(e=>console.warn('share card',e));
   $('end').classList.remove('hide');},win?3200:1800);}
+
+// ============================================================ sharing
+const SITE_URL='https://geekyme.github.io/ai-game-dragonboat/';
+const GRADE_LINE={S:'Flawless crossing',A:'Strong crossing',B:'Made it, with bruises',C:'Barely made it',D:'Crawled ashore',F:'Lost at sea'};
+function shareUrl(){const r=G.result;return SITE_URL+'#r='+[r.grade,r.adoption,r.sync,r.streak].join('-');}
+function shareCaption(){const r=G.result;const head=r.win?`I just paddled my team to Transformation Island 🏝️ in Dragon Boat: The AI Crossing.`:`My team got lost at sea in Dragon Boat: The AI Crossing, but we're sailing again.`;
+ return `${head}\nGrade ${r.grade} · ${r.adoption}% AI adoption · ${r.sync}% strokes in sync · best streak ×${r.streak}\nCan your team beat it? ${shareUrl()}\n#AIAdoption #ChangeManagement #TeamWork`;}
+let shareCanvas=null,shareBlob=null;
+async function buildShare(){const r=G.result;$('shareText').value=shareCaption();
+ await Promise.all([document.fonts.load('800 200px Cinzel'),document.fonts.load('600 30px Inter'),document.fonts.load('800 30px Inter')]).catch(()=>{});
+ const S=1080;const c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');
+ // background: live frame
+ try{composer.render();const src=renderer.domElement;const sc=Math.max(S/src.width,S/src.height);x.drawImage(src,(S-src.width*sc)/2,(S-src.height*sc)/2,src.width*sc,src.height*sc);}catch(e){x.fillStyle='#0b2a44';x.fillRect(0,0,S,S);}
+ const g=x.createLinearGradient(0,0,0,S);g.addColorStop(0,'rgba(6,20,36,.55)');g.addColorStop(.45,'rgba(6,20,36,.7)');g.addColorStop(1,'rgba(6,20,36,.94)');x.fillStyle=g;x.fillRect(0,0,S,S);
+ // header
+ const logo=new Image();logo.src='assets/logo.svg';try{await logo.decode();x.drawImage(logo,56,52,84,84);}catch(e){}
+ x.textBaseline='alphabetic';x.fillStyle='#f2c14e';x.font='800 30px Cinzel, serif';x.fillText('DRAGON BOAT · THE AI CROSSING',160,96);
+ x.fillStyle='rgba(255,255,255,.75)';x.font='600 22px Inter, sans-serif';x.fillText('Adoption Report · '+(r.win?'We made it':'Lost at sea'),160,128);
+ // grade
+ x.shadowColor='rgba(242,193,78,.6)';x.shadowBlur=40;x.fillStyle='#f2c14e';x.font='800 250px Cinzel, serif';x.fillText(r.grade,56,420);x.shadowBlur=0;
+ x.fillStyle='#fff';x.font='800 46px Inter, sans-serif';x.fillText(GRADE_LINE[r.grade]||'',300,352);
+ x.fillStyle='rgba(255,255,255,.8)';x.font='600 26px Inter, sans-serif';x.fillText(`Time ${r.time}  ·  Score ${r.score.toLocaleString()}`,300,398);
+ // stat tiles
+ const tiles=[['AI adoption',r.adoption+'%'],['Strokes in sync',r.sync+'%'],['Best streak','×'+r.streak],['Tools adopted',r.tools],['Hallucinations',r.halluc],['Legacy hits',r.hits]];
+ tiles.forEach(([k,v],i)=>{const col=i%3,row=Math.floor(i/3);const tx=56+col*328,ty=470+row*150,tw=300,th=126;x.fillStyle='rgba(255,255,255,.09)';x.beginPath();x.roundRect(tx,ty,tw,th,18);x.fill();x.strokeStyle='rgba(255,255,255,.14)';x.lineWidth=2;x.stroke();
+  x.fillStyle='rgba(255,255,255,.7)';x.font='700 18px Inter, sans-serif';x.fillText(k.toUpperCase(),tx+22,ty+40);x.fillStyle='#fff';x.font='800 52px Inter, sans-serif';x.fillText(String(v),tx+22,ty+100);});
+ // tools
+ let cx=56;const ty=812;x.font='700 20px Inter, sans-serif';AI_TOOLS.forEach(t=>{const on=G.tools.has(t.name);const w=x.measureText(t.name).width+34;x.fillStyle=on?t.css+'33':'rgba(255,255,255,.05)';x.strokeStyle=on?t.css:'rgba(255,255,255,.2)';x.beginPath();x.roundRect(cx,ty,w,44,22);x.fill();x.stroke();x.fillStyle=on?t.css:'rgba(255,255,255,.35)';x.fillText(t.name,cx+17,ty+29);cx+=w+10;});
+ // footer
+ x.fillStyle='#2ee6d6';x.font='800 34px Inter, sans-serif';x.fillText('Can your team beat it?',56,930);
+ x.fillStyle='#fff';x.font='600 28px Inter, sans-serif';x.fillText('geekyme.github.io/ai-game-dragonboat',56,972);
+ x.fillStyle='rgba(255,255,255,.6)';x.font='600 20px Inter, sans-serif';x.fillText('A game about adopting AI together · Made by a fellow AI adopter, Shawn Lim',56,1020);
+ shareCanvas=c;shareBlob=await new Promise(res=>c.toBlob(res,'image/png'));$('cardPreview').src=c.toDataURL('image/png');
+ $('shNative').style.display=navigator.share?'':'none';}
+function openWin(u){window.open(u,'_blank','noopener');}
+async function copyCaption(){try{await navigator.clipboard.writeText(shareCaption());toast('Caption copied');return true;}catch(e){const t=$('shareText');t.focus();t.select();toast('Select the caption and copy it');return false;}}
+$('shNative').addEventListener('click',async()=>{const data={title:'Dragon Boat: The AI Crossing',text:shareCaption(),url:shareUrl()};try{if(shareBlob){const f=new File([shareBlob],'ai-crossing-result.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]}))data.files=[f];}await navigator.share(data);}catch(e){if(e.name!=='AbortError')toast('Sharing not available here, use Save image',true);}});
+$('shDownload').addEventListener('click',()=>{if(!shareCanvas)return;const a=document.createElement('a');a.download='ai-crossing-result.png';a.href=shareCanvas.toDataURL('image/png');a.click();toast('Result card saved. Attach it to your post.');});
+$('shLinkedIn').addEventListener('click',async()=>{await copyCaption();openWin('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(shareUrl()));toast('Caption copied. Paste it into your LinkedIn post and attach the saved image.');});
+$('shX').addEventListener('click',()=>openWin('https://x.com/intent/post?text='+encodeURIComponent(shareCaption())));
+$('shWhatsApp').addEventListener('click',()=>openWin('https://wa.me/?text='+encodeURIComponent(shareCaption())));
+$('shCopy').addEventListener('click',copyCaption);
+(function challengeBanner(){const m=location.hash.match(/#r=([A-FS])-(\d+)-(\d+)-(\d+)/);if(!m)return;const el=$('challenge');el.hidden=false;el.innerHTML=`🔥 A teammate shared a <b>Grade ${m[1]}</b> crossing: ${m[2]}% AI adoption, ${m[3]}% in sync, best streak ×${m[4]}. <b>Beat it.</b>`;})();
 
 // ============================================================ main loop
 const clock=new THREE.Clock();let last=0;
