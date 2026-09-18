@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
 <title>Dragon Boat: The AI Crossing · a game about AI adoption</title>
 <meta name="description" content="A 3D dragon boat game about AI adoption. You are Seat 8; your department head is drumming the team toward Transformation Island through rocks of skepticism, legacy debris, a Kraken of Legacy Systems and a storm of hallucinations. Stay in sync, adopt real AI tools, verify the fakes.">
 <meta name="keywords" content="AI adoption, generative AI, change management, digital transformation, AI literacy, AI champions, workplace AI, team building game, gamified learning, AI hallucinations, dragon boat game, browser game, WebGL, Three.js">
@@ -59,7 +59,8 @@
 :root{--gold:#f2c14e;--teal:#2ee6d6;--red:#ff5c6c;--violet:#7c5cff}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;background:#061a2b;font-family:Inter,system-ui,sans-serif;color:#fff;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
-#game{position:fixed;inset:0;width:100%;height:100%;display:block}
+#game{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+body{overscroll-behavior:none}
 #hud{position:fixed;inset:0;pointer-events:none;opacity:0;transition:opacity .6s}
 #hud.on{opacity:1}
 .top{position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
@@ -112,9 +113,19 @@ html,body{height:100%;overflow:hidden;background:#061a2b;font-family:Inter,syste
 #dmg{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,40,60,0) 40%,rgba(255,40,60,.7) 100%);opacity:0;pointer-events:none;transition:opacity .15s}
 #flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
 #touch{position:fixed;bottom:0;left:0;right:0;display:none;justify-content:space-between;padding:16px;gap:12px;pointer-events:none}
-#touch button{pointer-events:auto;font:700 16px Inter,sans-serif;color:#fff;background:rgba(6,18,32,.6);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:22px 26px;backdrop-filter:blur(8px)}
-#touch #tP{flex:1;max-width:220px;background:rgba(242,193,78,.25);border-color:var(--gold)}
-@media (pointer:coarse){#touch{display:flex}#beat{bottom:110px}.bubble{bottom:120px;left:12px}#judge{bottom:250px}}
+#touch button{pointer-events:auto;font:800 22px Inter,sans-serif;color:#fff;background:rgba(6,18,32,.7);border:1px solid rgba(255,255,255,.25);border-radius:18px;padding:14px 18px;min-width:96px;display:flex;flex-direction:column;align-items:center;gap:2px;touch-action:none}
+#touch button small{font:600 10px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+#touch #tP{flex:1;max-width:260px;background:rgba(242,193,78,.3);border-color:var(--gold);color:#ffe9b0}
+#touch button:active{background:rgba(242,193,78,.5)}
+.coarse{display:none}
+@media (pointer:coarse){.fine{display:none!important}.coarse{display:inline!important}}
+@media (pointer:coarse){#touch{display:flex}#beat{bottom:116px}.bubble{top:96px;bottom:auto;left:10px;right:10px;max-width:none;font-size:13px;padding:9px 12px;transform:translateY(-10px)}.bubble.show{transform:none}.bubble:after{display:none}#judge{bottom:250px}.panel,.card,#touch button{backdrop-filter:none;-webkit-backdrop-filter:none}.panel{background:rgba(6,18,32,.75)}}
+@media (max-width:700px){.top{gap:6px;left:8px;right:8px;top:8px}.panel{padding:7px 9px;border-radius:10px}.meter{min-width:0;width:150px;margin-bottom:5px}.meter .lbl{font-size:9px}.tiers{display:none}.stage{display:none}.stats{min-width:0;font-size:11px;line-height:1.3}.stats b{font-size:15px}.hudBtn{display:none}.progress{top:74px;width:70vw}#banner h2{font-size:26px}#beat .hint{display:none}}
+.rotateHint{display:none;font-size:12px;opacity:.75;margin-top:10px}
+@media (pointer:coarse) and (orientation:portrait){.rotateHint{display:block}}
+.seg{display:flex;align-items:center;gap:6px;font-size:12px;opacity:.85;flex-wrap:wrap}
+.seg button{font:600 11px Inter,sans-serif;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 9px;cursor:pointer}
+.seg button.on{background:rgba(242,193,78,.22);border-color:var(--gold);color:#ffe9b0}
 .overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 30%,rgba(10,30,50,.55),rgba(3,10,20,.88));z-index:10;transition:opacity .6s}
 .overlay.hide{opacity:0;pointer-events:none}
 .card{max-width:min(760px,92vw);max-height:92vh;overflow:auto;background:rgba(8,20,36,.78);border:1px solid rgba(242,193,78,.35);border-radius:22px;padding:34px 38px;box-shadow:0 30px 100px rgba(0,0,0,.6),0 0 60px rgba(242,193,78,.12);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
@@ -145,7 +156,7 @@ kbd{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(
 .toggle{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;cursor:pointer;padding:10px 14px;border:1px solid rgba(255,255,255,.2);border-radius:12px;background:rgba(255,255,255,.06)}
 .toggle input{width:16px;height:16px;accent-color:var(--gold)}
 .hintKeys{font-size:12px;opacity:.6}
-@media (max-width:640px){.howto{grid-template-columns:1fr}.step{flex-direction:row;text-align:left;gap:12px}.step .ico{width:48px;height:48px;flex:none}.step b{display:block}.step span{display:block}.startCard{padding:22px 18px}}
+@media (max-width:640px){.howto{grid-template-columns:1fr}.step{flex-direction:row;text-align:left;gap:12px}.step .ico{width:48px;height:48px;flex:none}.step>b{display:block}.step>span{display:block}.startCard{padding:22px 18px}}
 .hudBtn{pointer-events:auto;cursor:pointer;margin-top:6px;font:700 11px Inter,sans-serif;letter-spacing:.06em;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:5px 9px}
 .hudBtn.off{opacity:.6;text-decoration:line-through}
 .credit{margin-top:16px;font-size:12px;opacity:.7;letter-spacing:.02em}
@@ -192,7 +203,7 @@ kbd{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(
   <div id="dmg"></div>
   <div id="flash"></div>
 </div>
-<div id="touch"><button id="tL">◀ LEFT</button><button id="tP">STROKE</button><button id="tR">RIGHT ▶</button></div>
+<div id="touch"><button id="tL">◀<small>hold to steer</small></button><button id="tP">STROKE<small>tap on the beat</small></button><button id="tR">▶<small>hold to steer</small></button></div>
 
 <div id="start" class="overlay">
   <div class="card startCard">
@@ -201,11 +212,11 @@ kbd{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(
     <div class="howto">
       <div class="step">
         <svg viewBox="0 0 96 96" class="ico"><circle cx="48" cy="48" r="20" fill="none" stroke="#fff" stroke-width="4"/><circle cx="48" cy="48" r="34" fill="none" stroke="#f2c14e" stroke-width="4" stroke-dasharray="6 5"/><path d="M48 6 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="#f2c14e"/><path d="M40 62 l8 8 20-22" fill="none" stroke="#2ee6d6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <b>Stroke on the beat</b><span><kbd>SPACE</kbd>, click or tap when the rings meet</span>
+        <b>Stroke on the beat</b><span><span class="fine"><kbd>SPACE</kbd> or click</span><span class="coarse">Tap <b>STROKE</b> or the water</span> when the rings meet</span>
       </div>
       <div class="step">
         <svg viewBox="0 0 96 96" class="ico"><path d="M48 14 C 62 30, 62 66, 48 82 C 34 66, 34 30, 48 14 Z" fill="#c1272d" stroke="#f2c14e" stroke-width="3"/><circle cx="48" cy="34" r="4" fill="#1bb8a8"/><circle cx="48" cy="48" r="4" fill="#1bb8a8"/><circle cx="48" cy="62" r="4" fill="#1bb8a8"/><path d="M22 48 l-12 0 m0 0 l6 -6 m-6 6 l6 6" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M74 48 l12 0 m0 0 l-6 -6 m6 6 l-6 6" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <b>Steer</b><span><kbd>A</kbd><kbd>D</kbd> or <kbd>◀</kbd><kbd>▶</kbd></span>
+        <b>Steer</b><span><span class="fine"><kbd>A</kbd><kbd>D</kbd> or <kbd>◀</kbd><kbd>▶</kbd></span><span class="coarse">Hold the <b>◀ ▶</b> buttons</span></span>
       </div>
       <div class="step">
         <svg viewBox="0 0 96 96" class="ico"><circle cx="30" cy="34" r="16" fill="#2ee6d6" opacity=".35"/><circle cx="30" cy="34" r="10" fill="#2ee6d6"/><path d="M30 12 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2z" fill="#fff"/><path d="M52 78 l8 -22 14 -4 14 12 -4 14z" fill="#5f6670"/><circle cx="70" cy="30" r="11" fill="#ff3b6b" opacity=".85"/><path d="M63 23 l14 14 m0 -14 l-14 14" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M6 80 q10 -8 20 0 t20 0" fill="none" stroke="#2fb7c9" stroke-width="3" stroke-linecap="round"/></svg>
@@ -215,8 +226,10 @@ kbd{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(
     <div class="actions">
       <button class="btn" id="startBtn">Set Sail</button>
       <label class="toggle"><input type="checkbox" id="musicChk" checked><span>♪ Music</span></label>
-      <span class="hintKeys"><kbd>M</kbd> mute · <kbd>B</kbd> music</span>
+      <span class="hintKeys fine"><kbd>M</kbd> mute · <kbd>B</kbd> music · <kbd>G</kbd> graphics</span>
     </div>
+    <div class="seg" style="margin-top:12px"><span>Graphics</span><button data-q="auto">Auto</button><button data-q="high">High</button><button data-q="medium">Medium</button><button data-q="low">Low</button><span id="qNote" style="opacity:.6"></span></div>
+    <p class="rotateHint">📱 Rotate your phone to landscape for the best view. Tap the screen to stroke.</p>
     <p class="credit">Made by a fellow AI adopter · <a href="https://linkedin.com/in/geekyme" target="_blank" rel="noopener">Shawn Lim on LinkedIn</a></p>
   </div>
 </div>
@@ -408,9 +421,19 @@ const Music={ctx:null,running:false,enabled:localStorage.getItem('db_music')!=='
 // ============================================================ renderer / scene
 const canvas=$('game');
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));
+const IS_MOBILE=matchMedia('(pointer:coarse)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+const TIERS={
+ high:  {dpr:Math.min(devicePixelRatio,1.5),   water:230,detail:1,bloom:true, bloomScale:1,  shadow:2048,shadowSoft:true},
+ medium:{dpr:Math.min(devicePixelRatio,1.5), water:150,detail:1,bloom:true, bloomScale:.5, shadow:1024,shadowSoft:false},
+ low:   {dpr:1,                              water:90, detail:0,bloom:false,bloomScale:.5, shadow:0,   shadowSoft:false},
+};
+const Q={mode:'auto',tier:IS_MOBILE?'medium':'high',acc:0,n:0,lowStreak:0,cooldown:4,warm:0};
+try{const saved=localStorage.getItem('db_quality');if(saved&&(saved==='auto'||TIERS[saved]))Q.mode=saved;}catch(e){}
+{const u=new URLSearchParams(location.search).get('quality');if(u&&(u==='auto'||TIERS[u]))Q.mode=u;}
+if(Q.mode!=='auto')Q.tier=Q.mode;
+renderer.setPixelRatio(TIERS[Q.tier].dpr);
 renderer.setSize(innerWidth,innerHeight);
-renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.shadowMap.enabled=TIERS[Q.tier].shadow>0;renderer.shadowMap.type=TIERS[Q.tier].shadowSoft?THREE.PCFSoftShadowMap:THREE.PCFShadowMap;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.95;
 const scene=new THREE.Scene();
 scene.fog=new THREE.FogExp2(0xd9ecff,.0032);
@@ -419,12 +442,14 @@ const pmrem=new THREE.PMREMGenerator(renderer);scene.environment=pmrem.fromScene
 
 const hemi=new THREE.HemisphereLight(0xdfefff,0x0a3d6a,.5);scene.add(hemi);
 const sun=new THREE.DirectionalLight(0xfff2d0,2.4);sun.castShadow=true;
-sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-16,right:16,top:16,bottom:-16,near:1,far:120});sun.shadow.bias=-.0008;sun.shadow.normalBias=.03;
+sun.castShadow=TIERS[Q.tier].shadow>0;sun.shadow.mapSize.set(TIERS[Q.tier].shadow||1024,TIERS[Q.tier].shadow||1024);Object.assign(sun.shadow.camera,{left:-16,right:16,top:16,bottom:-16,near:1,far:120});sun.shadow.bias=-.0008;sun.shadow.normalBias=.03;
 scene.add(sun);scene.add(sun.target);
 
-const composer=new EffectComposer(renderer);
+const rtSamples=(renderer.capabilities.isWebGL2&&!IS_MOBILE)?4:0;
+const composerRT=new THREE.WebGLRenderTarget(1,1,{type:THREE.HalfFloatType,samples:rtSamples});
+const composer=new EffectComposer(renderer,composerRT);composer.setSize(innerWidth,innerHeight);
 composer.addPass(new RenderPass(scene,camera));
-const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),.42,.5,1.0);composer.addPass(bloom);
+const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),.42,.5,1.0);bloom.enabled=TIERS[Q.tier].bloom;composer.addPass(bloom);
 composer.addPass(new OutputPass());
 
 // ============================================================ sky
@@ -451,10 +476,11 @@ const sky=new THREE.Mesh(new THREE.SphereGeometry(1400,48,24),new THREE.ShaderMa
 scene.add(sky);
 
 // ============================================================ water
-const waterUni={uTime:{value:0},uScroll:{value:0},uAmp:{value:.5},uChop:{value:.4},uBoatX:{value:0},uDeep:{value:new THREE.Color(0x0a3d6a)},uShallow:{value:new THREE.Color(0x2fb7c9)},uSky:{value:new THREE.Color(0xd9ecff)},uSunDir:{value:skyUni.uSunDir.value},uSunColor:{value:new THREE.Color(0xfff3d0)},uFog:{value:new THREE.Color(0xd9ecff)},uDens:{value:.0032},uFlash:{value:0}};
+const waterUni={uTime:{value:0},uScroll:{value:0},uAmp:{value:.5},uChop:{value:.4},uBoatX:{value:0},uDeep:{value:new THREE.Color(0x0a3d6a)},uShallow:{value:new THREE.Color(0x2fb7c9)},uSky:{value:new THREE.Color(0xd9ecff)},uSunDir:{value:skyUni.uSunDir.value},uSunColor:{value:new THREE.Color(0xfff3d0)},uFog:{value:new THREE.Color(0xd9ecff)},uDens:{value:.0032},uFlash:{value:0},uDetail:{value:1}};
 const WAVE_GLSL=`float wh(vec2 p){float h=0.0;h+=sin(p.x*0.08+p.y*0.05+uTime*1.1)*0.8;h+=sin(p.x*0.15-p.y*0.11+uTime*1.7)*0.4;h+=sin(-p.x*0.05+p.y*0.19+uTime*0.9)*0.5;h+=sin(p.x*0.3+p.y*0.25+uTime*2.6)*0.15*uChop;h+=sin(p.x*0.02+p.y*0.03+uTime*0.5)*0.9*uChop;return h*uAmp;}`;
 function waveH(x,z,t,amp,chop){let h=Math.sin(x*.08+z*.05+t*1.1)*.8;h+=Math.sin(x*.15-z*.11+t*1.7)*.4;h+=Math.sin(-x*.05+z*.19+t*.9)*.5;h+=Math.sin(x*.3+z*.25+t*2.6)*.15*chop;h+=Math.sin(x*.02+z*.03+t*.5)*.9*chop;return h*amp;}
-const waterGeo=new THREE.PlaneGeometry(760,760,230,230);waterGeo.rotateX(-Math.PI/2);
+const makeWaterGeo=n=>{const g=new THREE.PlaneGeometry(760,760,n,n);g.rotateX(-Math.PI/2);return g;};
+const waterGeo=makeWaterGeo(TIERS[Q.tier].water);
 const water=new THREE.Mesh(waterGeo,new THREE.ShaderMaterial({uniforms:waterUni,
  vertexShader:`uniform float uTime,uScroll,uAmp,uChop,uBoatX;varying vec3 vPos;varying vec3 vN;varying float vFoam;varying vec2 vQ;${WAVE_GLSL}
  void main(){vec3 p=position;vec2 q=vec2(p.x,p.z+uScroll);float h=wh(q);float e=0.6;float hx=wh(q+vec2(e,0.0));float hz=wh(q+vec2(0.0,e));
@@ -464,13 +490,13 @@ const water=new THREE.Mesh(waterGeo,new THREE.ShaderMaterial({uniforms:waterUni,
   float crest=smoothstep(uAmp*2.3,uAmp*3.4,h)*min(uChop,1.0)*0.9;
   vFoam=clamp(wake*0.85+crest,0.0,1.0);vN=n;vPos=(modelMatrix*vec4(p,1.0)).xyz;vQ=q;
   gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);}`,
- fragmentShader:`uniform vec3 uDeep,uShallow,uSky,uSunDir,uSunColor,uFog;uniform float uDens,uTime,uFlash,uAmp,uChop;varying vec3 vPos;varying vec3 vN;varying float vFoam;varying vec2 vQ;${WAVE_GLSL}
+ fragmentShader:`uniform vec3 uDeep,uShallow,uSky,uSunDir,uSunColor,uFog;uniform float uDens,uTime,uFlash,uAmp,uChop,uDetail;varying vec3 vPos;varying vec3 vN;varying float vFoam;varying vec2 vQ;${WAVE_GLSL}
  float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
  float vnoise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),f.x),mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),f.x),f.y);}
- void main(){vec2 q=vQ;float e=0.3;float h0=wh(q);vec3 n=normalize(vec3(h0-wh(q+vec2(e,0.0)),e,h0-wh(q+vec2(0.0,e))));
+ void main(){vec2 q=vQ;vec3 n;if(uDetail>0.5){float e=0.3;float h0=wh(q);n=normalize(vec3(h0-wh(q+vec2(e,0.0)),e,h0-wh(q+vec2(0.0,e))));}else{n=normalize(vN);}
   float r1=sin(q.x*1.7+q.y*1.3+uTime*2.0)+sin(q.x*2.9-q.y*2.1-uTime*1.6)+sin(q.x*5.1+q.y*3.7+uTime*3.1)*0.5;
   float r2=sin(q.x*1.1-q.y*2.7+uTime*1.4)+sin(q.x*3.4+q.y*0.9+uTime*2.4)+sin(q.x*4.3-q.y*5.2+uTime*2.8)*0.5;
-  float dcam=distance(cameraPosition,vPos);float det=exp(-dcam*0.011);
+  float dcam=distance(cameraPosition,vPos);float det=exp(-dcam*0.011)*uDetail;
   n=normalize(n+vec3(r1*0.045*det,0.0,r2*0.045*det));
   vec3 V=normalize(cameraPosition-vPos);float fres=pow(1.0-max(dot(n,V),0.0),4.0);
   float hgt=vPos.y;vec3 base=mix(uDeep,uShallow,clamp(hgt*0.22+0.42,0.0,1.0));
@@ -689,11 +715,23 @@ const birds=[];for(let i=0;i<8;i++){const b=new THREE.Group();for(const s of[-1,
 
 // ============================================================ palette (lerped)
 const pal={top:new THREE.Color(),hor:new THREE.Color(),sun:new THREE.Color(),deep:new THREE.Color(),shallow:new THREE.Color(),fog:new THREE.Color(),sunDir:new THREE.Vector3(),amp:.5,chop:.4,dens:.0032};
-function setPal(s,k){pal.top.lerp(new THREE.Color(s.top),k);pal.hor.lerp(new THREE.Color(s.hor),k);pal.sun.lerp(new THREE.Color(s.sun),k);pal.deep.lerp(new THREE.Color(s.deep),k);pal.shallow.lerp(new THREE.Color(s.shallow),k);pal.fog.lerp(new THREE.Color(s.fog),k);pal.sunDir.lerp(new THREE.Vector3(...s.sunDir).normalize(),k).normalize();pal.amp=lerp(pal.amp,s.amp,k);pal.chop=lerp(pal.chop,s.chop,k);pal.dens=lerp(pal.dens,s.dens,k);}
+for(const st of STAGES)st.c={top:new THREE.Color(st.top),hor:new THREE.Color(st.hor),sun:new THREE.Color(st.sun),deep:new THREE.Color(st.deep),shallow:new THREE.Color(st.shallow),fog:new THREE.Color(st.fog),sunDir:new THREE.Vector3(...st.sunDir).normalize()};
+function setPal(s,k){const c=s.c;pal.top.lerp(c.top,k);pal.hor.lerp(c.hor,k);pal.sun.lerp(c.sun,k);pal.deep.lerp(c.deep,k);pal.shallow.lerp(c.shallow,k);pal.fog.lerp(c.fog,k);pal.sunDir.lerp(c.sunDir,k).normalize();pal.amp=lerp(pal.amp,s.amp,k);pal.chop=lerp(pal.chop,s.chop,k);pal.dens=lerp(pal.dens,s.dens,k);}
 setPal(STAGES[0],1);
 
 // ============================================================ game state
 const G={};
+function applyTier(name,announce){const T=TIERS[name];if(!T)return;Q.tier=name;
+ renderer.setPixelRatio(T.dpr);renderer.setSize(innerWidth,innerHeight);composer.setPixelRatio(T.dpr);composer.setSize(innerWidth,innerHeight);bloom.setSize(innerWidth*T.bloomScale,innerHeight*T.bloomScale);bloom.enabled=T.bloom;
+ if(water.geometry.parameters.widthSegments!==T.water){const old=water.geometry;water.geometry=makeWaterGeo(T.water);old.dispose();}
+ waterUni.uDetail.value=T.detail;
+ const shadowsOn=T.shadow>0;if(renderer.shadowMap.enabled!==shadowsOn||sun.castShadow!==shadowsOn||(shadowsOn&&sun.shadow.mapSize.x!==T.shadow)){renderer.shadowMap.enabled=shadowsOn;renderer.shadowMap.type=T.shadowSoft?THREE.PCFSoftShadowMap:THREE.PCFShadowMap;sun.castShadow=shadowsOn;if(shadowsOn){sun.shadow.mapSize.set(T.shadow,T.shadow);if(sun.shadow.map){sun.shadow.map.dispose();sun.shadow.map=null;}}scene.traverse(o=>{if(o.material){const ms=Array.isArray(o.material)?o.material:[o.material];ms.forEach(m=>m.needsUpdate=true);}});}
+ updateQualityUI();if(announce)toast('Graphics: '+name.toUpperCase()+(Q.mode==='auto'?' (auto)':''));}
+function setQualityMode(mode){Q.mode=mode;try{localStorage.setItem('db_quality',mode);}catch(e){}Q.lowStreak=0;Q.cooldown=4;applyTier(mode==='auto'?(IS_MOBILE?'medium':'high'):mode,true);}
+function updateQualityUI(){document.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.q===Q.mode));const n=$('qNote');if(n)n.textContent=Q.mode==='auto'?'now '+Q.tier+', drops if laggy':'';}
+function perfSample(dt){if(G.state!=='play'||Q.mode!=='auto')return;Q.warm+=dt;if(Q.warm<3)return;Q.acc+=dt;Q.n++;if(Q.acc<1)return;const avg=Q.acc/Q.n;Q.acc=0;Q.n=0;
+ if(Q.cooldown>0){Q.cooldown--;return;}
+ if(avg>1/38){if(++Q.lowStreak>=3){Q.lowStreak=0;Q.cooldown=6;const next={high:'medium',medium:'low'}[Q.tier];if(next)applyTier(next,true);}}else Q.lowStreak=0;}
 function resetGame(){Object.assign(G,{state:'start',t:0,dist:0,speed:0,boost:0,morale:100,adoption:0,tier:0,score:0,combo:0,maxCombo:0,perfects:0,goods:0,misses:0,strokes:0,hits:0,halluc:0,orbsGot:0,gates:0,tools:new Set(),stage:0,boatX:0,boatVX:0,scroll:0,beatT:0,beatIdx:-1,hitBeat:-1,slow:0,shake:0,flash:0,lightT:rand(3,7),nextSpawn:60,shieldCD:0,shieldReady:false,lineCD:0,queue:[],bubbleT:0,playerStroke:1,drumHit:0,lastMoraleLine:0,whirlPull:0,winT:0,elapsed:0,firstOrb:false,ended:false});
  for(const e of entities){scene.remove(e.obj);e.kill?.();}entities.length=0;
  krakenHead.visible=false;krakenState={t:0,active:false,side:-1};island.visible=false;birds.forEach(b=>b.visible=false);
@@ -710,9 +748,9 @@ function updateHud(){$('morale').style.width=G.morale+'%';$('moraleTxt').textCon
 
 // ============================================================ input
 const keys={};
-const KEYMAP={' ':'Space','space':'Space','spacebar':'Space','w':'KeyW','a':'KeyA','d':'KeyD','m':'KeyM','b':'KeyB','arrowup':'ArrowUp','arrowleft':'ArrowLeft','arrowright':'ArrowRight','enter':'Enter'};
+const KEYMAP={' ':'Space','space':'Space','spacebar':'Space','g':'KeyG','w':'KeyW','a':'KeyA','d':'KeyD','m':'KeyM','b':'KeyB','arrowup':'ArrowUp','arrowleft':'ArrowLeft','arrowright':'ArrowRight','enter':'Enter'};
 const keyCode=e=>e.code||KEYMAP[(e.key||'').toLowerCase()]||'';
-addEventListener('keydown',e=>{if(e.repeat)return;const c=keyCode(e);keys[c]=true;if(c==='Space'||c==='KeyW'||c==='ArrowUp'){e.preventDefault();stroke();}if(c==='KeyM')Audio.toggleMute();if(c==='KeyB'){Music.setEnabled(!Music.enabled);toast(Music.enabled?'Background music on':'Music off: drum only');}if(c==='Enter'&&G.state==='start')startGame();});
+addEventListener('keydown',e=>{if(e.repeat)return;const c=keyCode(e);keys[c]=true;if(c==='Space'||c==='KeyW'||c==='ArrowUp'){e.preventDefault();stroke();}if(c==='KeyM')Audio.toggleMute();if(c==='KeyG'){const order=['auto','high','medium','low'];setQualityMode(order[(order.indexOf(Q.mode)+1)%order.length]);}if(c==='KeyB'){Music.setEnabled(!Music.enabled);toast(Music.enabled?'Background music on':'Music off: drum only');}if(c==='Enter'&&G.state==='start')startGame();});
 addEventListener('keyup',e=>{keys[keyCode(e)]=false;});
 canvas.addEventListener('pointerdown',e=>{if(G.state==='play')stroke();});
 const tl=$('tL'),tr=$('tR'),tp=$('tP');
@@ -723,6 +761,7 @@ updateMusicUI();
 $('musicChk').addEventListener('change',e=>Music.setEnabled(e.target.checked));
 $('musicBtn').addEventListener('click',e=>{e.stopPropagation();Music.setEnabled(!Music.enabled);toast(Music.enabled?'Background music on':'Music off: drum only');});
 $('musicBtn').addEventListener('pointerdown',e=>e.stopPropagation());
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>setQualityMode(b.dataset.q)));updateQualityUI();
 const firstGesture=()=>{Audio.init();if(Audio.ctx.state==='suspended')Audio.ctx.resume();if(G.state==='start'&&!Music.running)Music.start('menu');};addEventListener('pointerdown',firstGesture,{once:true});addEventListener('keydown',firstGesture,{once:true});
 $('startBtn').addEventListener('click',startGame);
 $('againBtn').addEventListener('click',()=>{$('end').classList.add('hide');resetGame();startGame();});
@@ -880,11 +919,13 @@ function frame(){requestAnimationFrame(frame);const dt=Math.min(.05,clock.getDel
  // ---- lines / bubble
  if(G.queue.length&&G.t>=G.queue[0].at&&G.bubbleT<=0){const l=G.queue.shift();$('bubbleText').textContent=l.text;$('bubble').classList.add('show');G.bubbleT=3.2+l.text.length*.04;}
  if(G.bubbleT>0){G.bubbleT-=dt;if(G.bubbleT<=0)$('bubble').classList.remove('show');}
- if(playing||G.state!=='start')updateHud();
+ if((playing||G.state!=='start')&&(G.frame=(G.frame||0)+1)%3===0)updateHud();
+ perfSample(dt);
  composer.render();
 }
-addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);composer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();});
-window.DB={G,Music,Audio,renderer,composer,camera,scene};
+addEventListener('resize',()=>{const T=TIERS[Q.tier];renderer.setSize(innerWidth,innerHeight);composer.setSize(innerWidth,innerHeight);bloom.setSize(innerWidth*T.bloomScale,innerHeight*T.bloomScale);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();});
+window.DB={G,Music,Audio,renderer,composer,camera,scene,Q,TIERS,applyTier};
+applyTier(Q.tier,false);
 $('loading').style.display='none';
 frame();
 </script>

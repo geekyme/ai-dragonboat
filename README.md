@@ -47,7 +47,16 @@ Then open http://localhost:8765. Any static server works (`npx serve`, VS Code L
 | Mute | `M` |
 | Background music on/off (drum only) | `B`, the ♪ button in the HUD, or the checkbox on the title screen |
 
-On touch devices there are on-screen Left / Stroke / Right buttons.
+On phones and tablets: hold the ◀ ▶ buttons to steer and tap STROKE (or anywhere on the water) on the beat.
+Landscape gives the best view.
+
+## Performance
+
+Graphics scale automatically. Three tiers (High / Medium / Low) adjust pixel ratio, water mesh density,
+per-pixel water detail, bloom resolution, shadow map size and antialiasing. **Auto** starts on High for
+desktops and Medium for phones, then steps down if the frame rate stays under about 38 fps for a few
+seconds. Pick a tier on the title screen, press `G` in game, or use `?quality=low|medium|high|auto`.
+The choice is remembered.
 
 ## How it plays
 
