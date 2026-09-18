@@ -10,7 +10,7 @@
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#061a2b">
 <link rel="author" href="https://linkedin.com/in/geekyme">
-<link rel="canonical" href="https://geekyme.github.io/ai-game-dragonboat/">
+<link rel="canonical" href="https://geekyme.github.io/ai-dragonboat/">
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
@@ -20,9 +20,9 @@
 <meta property="og:site_name" content="Dragon Boat: The AI Crossing">
 <meta property="og:title" content="Dragon Boat: The AI Crossing · a game about AI adoption">
 <meta property="og:description" content="A 3D dragon boat game about AI adoption. You are Seat 8; your department head is drumming the team toward Transformation Island through rocks of skepticism, legacy debris, a Kraken of Legacy Systems and a storm of hallucinations. Stay in sync, adopt real AI tools, verify the fakes.">
-<meta property="og:url" content="https://geekyme.github.io/ai-game-dragonboat/">
-<meta property="og:image" content="https://geekyme.github.io/ai-game-dragonboat/assets/og-image.jpg">
-<meta property="og:image:secure_url" content="https://geekyme.github.io/ai-game-dragonboat/assets/og-image.jpg">
+<meta property="og:url" content="https://geekyme.github.io/ai-dragonboat/">
+<meta property="og:image" content="https://geekyme.github.io/ai-dragonboat/assets/og-image.jpg">
+<meta property="og:image:secure_url" content="https://geekyme.github.io/ai-dragonboat/assets/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -31,7 +31,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Dragon Boat: The AI Crossing · a game about AI adoption">
 <meta name="twitter:description" content="Row your team through skepticism, legacy systems and hallucinations to Transformation Island. A 3D browser game about adopting AI together.">
-<meta name="twitter:image" content="https://geekyme.github.io/ai-game-dragonboat/assets/og-image.jpg">
+<meta name="twitter:image" content="https://geekyme.github.io/ai-dragonboat/assets/og-image.jpg">
 <meta name="twitter:image:alt" content="A dragon boat crew paddling toward Transformation Island at sunset">
 <script type="application/ld+json">
 {
@@ -39,8 +39,8 @@
   "@type": "VideoGame",
   "name": "Dragon Boat: The AI Crossing",
   "alternateName": "The AI Crossing",
-  "url": "https://geekyme.github.io/ai-game-dragonboat/",
-  "image": "https://geekyme.github.io/ai-game-dragonboat/assets/og-image.jpg",
+  "url": "https://geekyme.github.io/ai-dragonboat/",
+  "image": "https://geekyme.github.io/ai-dragonboat/assets/og-image.jpg",
   "description": "A 3D dragon boat game about AI adoption. You are Seat 8; your department head is drumming the team toward Transformation Island through rocks of skepticism, legacy debris, a Kraken of Legacy Systems and a storm of hallucinations. Stay in sync, adopt real AI tools, verify the fakes.",
   "genre": ["Rhythm", "Arcade", "Educational"],
   "keywords": "AI adoption, generative AI, change management, digital transformation, AI literacy, team building, gamified learning, dragon boat",
@@ -845,7 +845,7 @@ function endGame(win){if(G.ended)return;G.ended=true;G.state=win?'won':'lost';Mu
   $('end').classList.remove('hide');},win?3200:1800);}
 
 // ============================================================ sharing
-const SITE_URL='https://geekyme.github.io/ai-game-dragonboat/';
+const SITE_URL='https://geekyme.github.io/ai-dragonboat/';
 const GRADE_LINE={S:'Flawless crossing',A:'Strong crossing',B:'Made it, with bruises',C:'Barely made it',D:'Crawled ashore',F:'Lost at sea'};
 function shareUrl(){const r=G.result;return SITE_URL+'#r='+[r.grade,r.adoption,r.sync,r.streak].join('-');}
 function shareCaption(){const r=G.result;const head=r.win?`I just paddled my team to Transformation Island 🏝️ in Dragon Boat: The AI Crossing.`:`My team got lost at sea in Dragon Boat: The AI Crossing, but we're sailing again.`;
@@ -873,7 +873,7 @@ async function buildShare(){const r=G.result;$('shareText').value=shareCaption()
  let cx=56;const ty=812;x.font='700 20px Inter, sans-serif';AI_TOOLS.forEach(t=>{const on=G.tools.has(t.name);const w=x.measureText(t.name).width+34;x.fillStyle=on?t.css+'33':'rgba(255,255,255,.05)';x.strokeStyle=on?t.css:'rgba(255,255,255,.2)';x.beginPath();x.roundRect(cx,ty,w,44,22);x.fill();x.stroke();x.fillStyle=on?t.css:'rgba(255,255,255,.35)';x.fillText(t.name,cx+17,ty+29);cx+=w+10;});
  // footer
  x.fillStyle='#2ee6d6';x.font='800 34px Inter, sans-serif';x.fillText('Can your team beat it?',56,930);
- x.fillStyle='#fff';x.font='600 28px Inter, sans-serif';x.fillText('geekyme.github.io/ai-game-dragonboat',56,972);
+ x.fillStyle='#fff';x.font='600 28px Inter, sans-serif';x.fillText('geekyme.github.io/ai-dragonboat',56,972);
  x.fillStyle='rgba(255,255,255,.6)';x.font='600 20px Inter, sans-serif';x.fillText('A game about adopting AI together · Made by a fellow AI adopter, Shawn Lim',56,1020);
  shareCanvas=c;shareBlob=await new Promise(res=>c.toBlob(res,'image/png'));$('cardPreview').src=c.toDataURL('image/png');
  $('shNative').style.display=navigator.share?'':'none';}
